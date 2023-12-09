@@ -64,36 +64,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           key: viewModel.formKey,
                           child: Column(
                             children: [
-                              TextFieldItem(
-                                  fieldName: 'user name',
-                                  hintText: 'enter your name',
-                                  controller: viewModel.nameController,
-                                  validator: (text) {
-                                    if (text == null ) {
-                                      return 'Please enter User Name';
-                                    }
-                                    return null;
-                                  }),
-                              TextFieldItem(
-                                fieldName: 'Email',
-                                keyboardType: TextInputType.emailAddress,
-                                hintText: 'enter your email',
-                                controller: viewModel.emailController,
+                              TextFieldItem(fieldName: 'User name', hintText: 'enter your name', controller: viewModel.nameController, validator: (text) {
+                                if (text == null || text.trim().isEmpty) {
+                                  return 'Please enter User Name';
+                                }
+                                return null; }),
+                              TextFieldItem(fieldName: 'E-mail',keyboardType: TextInputType.emailAddress,
+                                hintText: 'enter your email', controller: viewModel.emailController,
                                 validator: (text) {
-                                  if (text == null ) {
+                                  if (text == null || text.trim().isEmpty) {
                                     return 'Please enter Email';
                                   }
                                   bool emailValid = RegExp(
-                                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(text);
+                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                      .hasMatch(text);
                                   if (!emailValid) {
                                     return 'Please enter valid email';
                                   }
                                   return null;
-                                },
-                              ),
-                              TextFieldItem(
-                                fieldName: 'Password',
-                                keyboardType: TextInputType.number,
+                                },),
+                              TextFieldItem(fieldName: 'Password',keyboardType: TextInputType.number,
+                                isObscure: viewModel.isObscure ,
+                                suffixIcon:  InkWell(
+                                  onTap: () {
+                                    if (viewModel.isObscure) {
+                                      viewModel.isObscure = false;
+                                    } else {
+                                      viewModel.isObscure = true;
+                                    }
+                                    setState(() {});
+                                  },
+                                  child: viewModel.isObscure
+                                      ? Icon(Icons.visibility_off)
+                                      : Icon(Icons.visibility),
+                                ),
+                                hintText: 'enter your password', controller: viewModel.passwordController, validator: (text) {
+                                  if (text == null || text.trim().isEmpty) {
+                                    return 'Please enter Password';
+                                  }
+                                  if (text.length < 6) {
+                                    return 'Password should be at least 6 characters';
+                                  }
+                                  return null;
+                                },),
+                              TextFieldItem(fieldName: 'Confirm password',keyboardType: TextInputType.number,
                                 isObscure: viewModel.isObscure,
                                 suffixIcon: InkWell(
                                   onTap: () {
@@ -105,61 +119,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     setState(() {});
                                   },
                                   child: viewModel.isObscure
-                                      ? Icon(Icons.visibility_off, color: Colors.black54,)
-                                      : Icon(Icons.visibility, color: Colors.black54,),
+                                      ? Icon(Icons.visibility_off)
+                                      : Icon(Icons.visibility),
                                 ),
-                                hintText: 'enter your password',
-                                controller: viewModel.passwordController,
-                                validator: (text) {
-                                  if (text == null ) {
-                                    return 'Please enter Password';
-                                  }
-                                  if (text.length < 6) {
-                                    return 'Password should be at least 6 characters';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              TextFieldItem(
-                                fieldName: 'Confirm password',
-                                keyboardType: TextInputType.number,
-                                isObscure: viewModel.isObscure,
-                                suffixIcon: InkWell(
-                                  onTap: () {
-                                    if (viewModel.isObscure) {
-                                      viewModel.isObscure = false;
-                                    } else {
-                                      viewModel.isObscure = true;
-                                    }
-                                  },
-                                  child: viewModel.isObscure
-                                      ? Icon(Icons.visibility_off, color: Colors.black54,)
-                                      : Icon(Icons.visibility, color: Colors.black54,)
-                                ),
-                                hintText: 'enter password again',
-                                controller: viewModel.confirmPasswordController,
-                                validator: (text) {
-                                  if (text == null ) {
+                                hintText: 'enter password again', controller: viewModel.confirmPasswordController, validator: (text) {
+                                  if (text == null || text.trim().isEmpty) {
                                     return 'Please enter Confirmation Password';
                                   }
-                                  if (text !=
-                                      viewModel.passwordController.text) {
+                                  if (text != viewModel.passwordController.text) {
                                     return 'Password does not match';
                                   }
                                   return null;
-                                },
-                              ),
-                              TextFieldItem(
-                                  fieldName: 'phone number',
-                                  keyboardType: TextInputType.phone,
-                                  hintText: 'enter your phone number',
-                                  controller: viewModel.phoneController,
+                                },),
+                              TextFieldItem(fieldName: 'phone number',keyboardType: TextInputType.phone,
+                                  hintText: 'enter your phone number', controller: viewModel.phoneController,
                                   validator: (text) {
                                     if (text!.length != 11) {
-                                      return 'incorrect';
+                                      return 'phone number should be 11 numbers';
                                     }
-                                    return null;
-                                  }),
+                                    return null; }),
                               Padding(
                                 padding: EdgeInsets.only(top: 35.h),
                                 child: ElevatedButton(

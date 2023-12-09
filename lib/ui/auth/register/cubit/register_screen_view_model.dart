@@ -23,7 +23,7 @@ var emailController = TextEditingController();
 var phoneController = TextEditingController();
 
 bool isObscure = true;
-Future<void> register() async {
+void register() async {
 
   if(formKey.currentState?.validate() == true){
     ///logic
